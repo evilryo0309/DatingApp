@@ -25,7 +25,7 @@ namespace API.Controllers
         {
             if(await UserExist(registerDto.Username)) return BadRequest("Username is taken");
             
-            using var hmac = new HMACSHA256();
+            using var hmac = new HMACSHA512();
 
             var user = new AppUser
             {
@@ -52,7 +52,7 @@ namespace API.Controllers
 
             if(user == null) return Unauthorized("Invalid username");
 
-            var hmac = new HMACSHA256(user.PasswordSalt);
+            var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
             for (int i = 0; i < computedHash.Length; i++)
